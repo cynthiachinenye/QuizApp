@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="quiz-container">
+  
+        <div class="start-screen">
+            <h1>Start the Quiz </h1>
+            <p>Good Luck!</p>
+            <button id="startBtn">Start Quiz</button>
+        </div>
+        <div class="quiz-screen">
+            <h2 id="question"></h2>
+            
+            <div id="options"> </div>
+
+            <button id="next-btn">Next question</button>
+ 
+        </div>
+         <p id="timer"> Time Left: 01:00:00 </p>
+
+        <div id="result-screen"> 
+         <!-- <button id="showCorrection">Show Result</button> -->
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <!-- <script >
+        const startBtn = document.getElementById('startBtn');
+        const quizScreen = document.querySelector('.quiz-screen');
+        const startScreen = document.querySelector('.start-screen');
+        const nxtQ = document.getElementById('next-btn');
+        const  questionElement = document.getElementById('question');
+        const optionContainer = document.getElementById('options');
+        const results = document.getElementById('result-screen');
+        
+        
+
+        const options = [
+            {question:"What does HTML stands for? ",
+               option:["Hyper text markup language","Home Tool Markup Language", "Hyperlinks Text Markup Language"],
+               answer: "Hyperlinks Text Markup Language",
+            },
+            {question:"Who is making the Web standards?",
+                option:["Google","Microsoft","Mozilla","The world wide web consortium"],
+                answer:"The world wide web consortium",
+            },
+            {question:"Choose the correct HTML element for the largest heading:",
+                option:["<head>","<h6>","<h1>","<heading>"],
+                answer:"<h1>",
+            },
+            {question:"What is the correct HTML element for inserting a line break?",
+                option:["<break>","<br>","<lb>"],
+                answer:"<br>",
+            },
+            {question:"What does CSS stand for?",
+                option:["Colorful Style Sheets","Computer Style Sheets","Cascading Style Sheets","Consortium Style Sheets"],
+                answer:"Cascading Style Sheets",
+            },
+            {question:"What is the correct HTML for referring to an external style sheet?",
+                option:["<style src='mystyle.css'>","<stylesheet>mystyle.css</stylesheet>",'<link rel="stylesheet" type="text/css" href="style.css"/>'],
+                answer:'<link rel="stylesheet" type="text/css" href="style.css"/>',
+            },
+            {question:"Where in an HTML document is the correct place to refer to an external style sheet?",
+                option:["At the end of the document","In the <head> section","In the <body> section","The world wide web consortium"],
+                answer:"In the <head> section",
+            },
+            {question:"Which HTML tag is used to define an internal style sheet?",
+                option:["<script>","<css>","<style>"],
+                answer:"<style>",
+            },
+            {question:"Inside which HTML element do we put the JavaScript?",
+                option:["<scripting>","<js>","<script>","<javascript>"],
+                answer:"<script>",
+            },
+            {question:`What is the correct JavaScript syntax to change the content of the HTML element below?<p id="demo">This is a demonstration.</p>`,
+                option:["document.getElementByName('p').innerHTML='Hello World'","#demo.innerHTML='Hello World!'","document.getElementById('demo').innerHTML='Hello World!","document.getElement('p').innerHTML='Hello World!'"],
+                answer:"document.getElementById('demo').innerHTML='Hello World!'",
+            }
+
+
+        ]
+        
+        
+     
+              
+        let  currentQuestionIndex = 0;
+        let score = 0;
+        let timerInterval;
+        let timeLeft = 3600;
+        let userAnswers =[];
+
+  
+        const displayQuestion = () =>{
+
+            const currentQuestion = options[currentQuestionIndex];
+            questionElement.textContent = currentQuestion.question;
+
+            optionContainer.innerHTML ='';
+
+            currentQuestion.option.forEach(optionText =>{
+                const label= document.createElement('label');
+                label.classList.add('option-label');
+
+                const input = document.createElement('input');
+                input.type ='radio';
+                input.name = 'option'; //same name to group them
+                input.value = optionText;
+
+
+                label.appendChild(input);
+                label.appendChild(document.createTextNode(optionText));
+                optionContainer.appendChild(label)
+            })
+
+            
+            
+        }
+
+        const moveToNextQ = () =>{
+
+            const selectOption = document.querySelector('input[name="option"]:checked');
+
+            if(!selectOption){
+                // alert("Please select an answer!");
+                return;
+            }
+
+            const userAnswer = selectOption.value;
+            const correctAnswer = options[currentQuestionIndex].answer;
+        
+
+            if(userAnswer === correctAnswer){
+                score++;
+            }
+
+            userAnswers.push({
+            question:options[currentQuestionIndex].question,
+            correctAnswer:options[currentQuestionIndex].answer,
+            selectedAnswer:userAnswer
+        })
+             currentQuestionIndex++;
+
+             if (currentQuestionIndex < options.length){
+                displayQuestion();
+             }else{
+                showResult();
+
+             }
+
+             
+
+        };
+
+        
+
+      
+        // const showResult = () =>{
+           
+        //     quizScreen.style.display='none';
+        //     results.style.display ='block';
+        //     document.getElementById('timer').style.display ="none";
+
+        //     const totalQuestions = options.length;
+        //     const perc =((score/totalQuestions)*100).toFixed(2);
+
+
+        //     results.innerHTML =`
+        //     <h2>Quiz Completed!</h2>
+        //     <p> Your Score is ${score} out of ${totalQuestions}</p>
+        //      <p>Percentage: ${perc}%</p>
+
+        //     `;
+        
+        //   // showCorrection.style.display ='block';
+        //   // document.getElementById('showCorrection').style.display="block";
+           
+          
+        //      const showCorrection= document.getElementById('showCorrection');
+  
+
+        //    showCorrection.addEventListener('click', function(){
+        //     results.innerHTML +=`<h3> Review Your Answers: </h3>`;
+
+        //     userAnswers.forEach((item,index)=>{
+        //         const isCorrect = item.selectedAnswer === item.correctAnswer;
+        //         results.innerHTML += `
+        //         <div style="margin-bottom:10px;">
+        //             <p><strong>Q${index +1}:</strong></p>
+        //             <p style="color:${isCorrect ? 'green' : 'red'}">
+        //                 ${isCorrect ? '✅' : '❌'} </p>
+        //                 ${isCorrect ? `<p style="color:green;">Correct Answer:${item.correctAnswer}</p>`: ''}
+        //                 </hr>
+        //                 </div>
+        //         `;
+        //     });
+
+        //     showCorrection.style.display='block'
+
+            
+        // })
+
+    
+    
+    
+   
+        //  const correctionBtn = document.createElement('button');
+        //  correctionBtn.id ='showCorrection';
+        //  correctionBtn.textContent ='showCorrection';
+        //  results.appendChild(correctionBtn);
+
+        //  correctionBtn.addEventListener('click', function(){
+
+        //  })
+
+        // }
+
+
+        const showResult = () => {
+    quizScreen.style.display = 'none';
+    results.style.display = 'block';
+    document.getElementById('timer').style.display = "none";
+
+    const totalQuestions = options.length;
+    const perc = ((score / totalQuestions) * 100).toFixed(2);
+
+    results.innerHTML = `
+        <h2>Quiz Completed!</h2>
+        <p>Your Score is ${score} out of ${totalQuestions}</p>
+        <p>Percentage: ${perc}%</p>
+        <button id="showCorrection">Show Correction</button>
+        <div id="correctionList"></div>
+    `;
+
+    // WAIT for DOM to update, then add event listener
+    setTimeout(() => {
+        const correctionBtn = document.getElementById('showCorrection');
+        const correctionList = document.getElementById('correctionList');
+
+        correctionBtn.addEventListener('click', function () {
+            correctionList.innerHTML = `<h3>Review Your Answers:</h3>`;
+
+            userAnswers.forEach((item, index) => {
+                const isCorrect = item.selectedAnswer === item.correctAnswer;
+
+                correctionList.innerHTML += `
+                    <div style="margin-bottom:10px;">
+                        <p><strong>Q${index + 1}:</strong> ${item.question}</p>
+                        <p style="color:${isCorrect ? 'green' : 'red'}">
+                            ${isCorrect ? '✅ Correct' : `❌ Wrong (Your answer: ${item.selectedAnswer})`}
+                        </p>
+                        <p>Correct Answer: ${item.correctAnswer}</p>
+                        <hr>
+                    </div>
+                `;
+            });
+
+            // Optional: hide the button after it's clicked
+            correctionBtn.style.display = 'none';
+        });
+    }, 100); // Wait a tiny bit for the DOM to catch up
+};
+
+
+           startBtn.addEventListener("click", function(e){
+    
+            e.preventDefault();
+            // alert("Button clicked");
+
+            startScreen.style.display ="none";
+            quizScreen.style.display ="block";
+
+              displayQuestion();
+              startTimer();
+            
+        });
+        function formatTime(seconds) {
+  const hrs = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+
+  return `${hrs.toString().padStart(2, '0')}:${mins
+    .toString()
+    .padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+        const startTimer = () =>{
+            const timerDisplay = document.getElementById('timer');
+            timerDisplay.textContent =formatTime(timeLeft);
+
+            timerInterval = setInterval(()=>{
+                timeLeft--;
+                timerDisplay.textContent = formatTime(timeLeft);
+
+                if(timeLeft <= 0){
+                    clearInterval(timerInterval);
+
+                    showResult();
+                    return;
+                }
+                
+            }, 1000);
+            // let now = new Date().getHours()
+            // let distance = countDownTime -now;
+
+            // let hours = Math.floor((distance %(1000 * 60 * 60 *24))/(1000 * 60));
+            // let minutes = Math.floor((distance %(1000 *60*60))/(1000*60));
+            // let seconds = Math.floor((distance % (1000 * 60))/ (1000)) ;
+
+            // document.getElementById('times').innerHTML = hours + minutes + seconds;
+        }
+
+      
+        nxtQ.addEventListener("click",moveToNextQ)
+      
+    </script> -->
+</body>
+</html>
