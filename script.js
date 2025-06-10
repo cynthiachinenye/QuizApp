@@ -1,7 +1,7 @@
 const qOptions =[
      {question:"What does HTML stands for? ",
                option:["Hyper text markup language","Home Tool Markup Language", "Hyperlinks Text Markup Language"],
-               answer: "Hyperlinks Text Markup Language",
+               answer:"Hyperlinks Text Markup Language",
             },
             {question:"Who is making the Web standards?",
                 option:["Google","Microsoft","Mozilla","The world wide web consortium"],
@@ -70,7 +70,16 @@ const displayQuestion = () =>{
     const displayCurrentQuestion = qOptions[currentQIndex];
     questionHeader.textContent= displayCurrentQuestion.question;
 
+    // update progress
+
+    const progressText = document.getElementById('progress-bar');
+     
+    if(progressText){
+
+    progressText.textContent =` Question ${currentQIndex + 1} of ${qOptions.length}` 
+    }
     optionContiner.innerHTML = '';
+    
     displayCurrentQuestion.option.forEach(optionT=>{
         console.log(optionT)
         const label = document.createElement('label');
@@ -116,16 +125,16 @@ const startTimer = ()=>{
 
 nextBtn.addEventListener('click', ()=>{
 
-    const selectOption = document.querySelector('input[name="option"]');
+    const selectOption = document.querySelector('input[name="option"]:checked');
 
-    if(!selectOption){
-        return;
-    }
+    // if(!selectOption){
+    //     return;
+    // }
 
-   const  userAnswer =selectOption.value;
+   const  userAnswer = selectOption ? selectOption.value: "";
     const correctAnswer = qOptions[currentQIndex].answer;
 
-    if(userAnswer ===correctAnswer){
+    if(userAnswer.trim().toLowerCase() === correctAnswer.trim().toLowerCase()){
         score++;
     }
 
@@ -136,7 +145,7 @@ nextBtn.addEventListener('click', ()=>{
     })
 
     currentQIndex++;
-    if(currentQIndex <qOptions.length){
+    if(currentQIndex < qOptions.length){
         displayQuestion();
     }else{
         showResult();
@@ -145,21 +154,65 @@ nextBtn.addEventListener('click', ()=>{
 })
 
 const showResult =()=>{
-    alert("question has ended");
+    // alert("question has ended");
     quizScreen.style.display = "none";
     resultScreen.style.display = "block";
     document.getElementById('timer').style.display ="none";
 
     const totalQuestions = qOptions.length;
-    const totalQuestionAnswered = ((score/totalQuestions)*100).toFixed(2);
+    const totalQuestionAnswered = ((score / totalQuestions)*100).toFixed(2);
 
-    resultScreen.innerHTML=`
+    resultScreen.innerHTML= `
     
 
       <h2>Quiz Completed!</h2>
 
       <h4>Your Total Score ${score} out of ${totalQuestions}</h4>
       <h5>You Scored: ${totalQuestionAnswered} %</h5>
+
+     <div id="btnflx">
+      <button id="showAns"> Show Answer</button>
+      <div id="correctionList"></div>
+
+      <button id="restartBtn">Restart</button>
     
+     </div>
     `
+
+// Wait for doma to update then add event listener
+
+setTimeout(() => {
+
+    const answerBtn = document.getElementById('showAns');
+    const answerList = document.getElementById('correctionList');
+
+    answerBtn.addEventListener('click', function(){
+        answerList.innerHTML=`<h4>Reveiw Your Answer</h4>`;
+
+        userAnswers.forEach((item,index)=>{
+
+            const isCorrect = item.selectedAnswer === item.correctAnswer;
+            answerList.innerHTML += `
+
+             <div style="margin-bottom:10px;">
+                        <p><strong>Q${index + 1}:</strong> ${item.question}</p>
+                        <p style="color:${isCorrect ? 'green' : 'red'}">
+                            ${isCorrect ? '✅ Correct' : `❌ Wrong (Your answer: ${item.selectedAnswer})`}
+                        </p>
+                        <p>Correct Answer: ${item.correctAnswer}</p>
+                        <hr>
+                    </div>
+            
+            `
+            
+        });
+        // hide button after clicking
+        answerBtn.style.display = "none";
+        
+    });
+    //wait a tiny bit for the DOM to catch up
+
+    
+    
+}, 1000);
 }

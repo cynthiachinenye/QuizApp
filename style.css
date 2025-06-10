@@ -62,14 +62,14 @@ input[type="radio"]{
    accent-color:green;
 }
 
-#showCorrection{
+#showAns{
     background-color:royalblue;
     color:#fff;
     border:none;
     padding:15px;
     border-radius:5px;
     margin:20px 0px;
-    display:none;
+    /* display:none; */
 }
 
 h2{
@@ -78,5 +78,24 @@ h2{
     font-size:30px;
     
 }
-
+#progress-bar{
+    margin-bottom:10px;
+    font-weight:bold;
+    text-align:center;
+    font-size:20px;
+    color:green;
+}
+#btnflx{
+    display:flex;
+    justify-content:space-between;
+}
+#restartBtn{
+     background-color:royalblue;
+    color:#fff;
+    border:none;
+    padding:15px;
+    border-radius:5px;
+    margin:20px 0px;
+    /* float:right; */
+}
 
