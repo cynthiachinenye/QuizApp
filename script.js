@@ -41,8 +41,8 @@ const qOptions =[
             }
 ]
 
-const   startScreen = document.querySelector('.start-screen');
-const  startBtn = document.getElementById('startBtn');
+const startScreen = document.querySelector('.start-screen');
+const startBtn = document.getElementById('startBtn');
 const quizScreen = document.querySelector('.quiz-screen');
 const questionHeader = document.getElementById('question');
 const optionContiner = document.getElementById('options');
@@ -171,10 +171,12 @@ const showResult =()=>{
       <h5>You Scored: ${totalQuestionAnswered} %</h5>
 
      <div id="btnflx">
+     <div>
       <button id="showAns"> Show Answer</button>
       <div id="correctionList"></div>
+      </div>
 
-      <button id="restartBtn">Restart</button>
+     <div><button id="restartBtn">Restart</button></div>
     
      </div>
     `
@@ -203,16 +205,44 @@ setTimeout(() => {
                         <hr>
                     </div>
             
-            `
+           
+                    `
             
+                   
+                   
+             
+
         });
         // hide button after clicking
         answerBtn.style.display = "none";
+
+
         
     });
     //wait a tiny bit for the DOM to catch up
 
-    
+ const restartBtn = document.getElementById('restartBtn');
+             restartBtn.addEventListener('click', ()=>{
+              currentQIndex = 0;
+              userAnswers=[];
+              clearInterval(timeInterval);
+              score=0;
+              timeLeft = 3600;
+
+              resultScreen.style.display ="none";
+              quizScreen.style.display ="block";
+
+              document.getElementById('timer').style.display ="none"
+
+
+              displayQuestion();
+              startTimer();
+
+             })
+
     
 }, 1000);
+
+
 }
+// restartBtn()

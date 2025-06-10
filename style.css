@@ -88,6 +88,7 @@ h2{
 #btnflx{
     display:flex;
     justify-content:space-between;
+    flex-direction:column;
 }
 #restartBtn{
      background-color:royalblue;
